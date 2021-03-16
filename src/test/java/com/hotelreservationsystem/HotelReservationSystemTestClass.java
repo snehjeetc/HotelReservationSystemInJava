@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
 import java.util.Map;
 
 public class HotelReservationSystemTestClass {
@@ -159,6 +160,23 @@ public class HotelReservationSystemTestClass {
             result = entry.getKey().getName() + ", Rating: " + entry.getKey().rating()
                     + " and Total Rates: " + entry.getValue();
         }
+        Assert.assertEquals(expected, result);
+    }
+
+    @Test
+    public void givenHotelsInTheSystem_shouldReturn_cheap_best_rated_Hotels_for_RewardCustomers_TestCase_11()
+    throws InvalidDateExceptions, HotelException{
+        String date1 = "11Sep2020";
+        String date2 = "12Sep2020";
+        String customer_type = "reward";
+        List<Hotel> list = hotelReservationSystem.getCheapAndBestRatedHotelList(Hotel.Customer_Type
+                        .valueOf((customer_type+"_type").toUpperCase()),
+                date1, date2);
+        String result = "";
+        for(Hotel h : list){
+            result += h.getName() + ": " + "Rating: " + h.rating() + " || ";
+        }
+        String expected = "Ridgewood: Rating: 5 || ";
         Assert.assertEquals(expected, result);
     }
 }

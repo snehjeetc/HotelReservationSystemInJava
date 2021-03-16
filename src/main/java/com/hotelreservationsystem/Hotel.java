@@ -1,5 +1,8 @@
 package com.hotelreservationsystem;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+
 public class Hotel {
     enum Customer_Type{
         REGULAR_TYPE,
@@ -47,5 +50,26 @@ public class Hotel {
                            ", " + weekendDayRate[Customer_Type.REGULAR_TYPE.ordinal()] +
                 " Weekday and Weekend reward rates: " + weekdayRate[Customer_Type.REWARD_TYPE.ordinal()] + ", " +
                 weekendDayRate[Customer_Type.REWARD_TYPE.ordinal()] + " Rating : " + this.rating;
+    }
+
+    public int calculateRate_LocalDates(Customer_Type valueOf, LocalDate localDate1, LocalDate localDate2) {
+        try {
+            if (!valueOf.equals(Customer_Type.REGULAR_TYPE) && !valueOf.equals(Customer_Type.REWARD_TYPE))
+                throw new HotelException("Invalid customer type");
+        }catch(HotelException e){
+            e.printStackTrace();
+            return -1;
+        }
+        LocalDate currentDate = LocalDate.parse(localDate1.toString());
+        int calculated_Rate = 0;
+        while(currentDate.compareTo(localDate1) >=0 && currentDate.compareTo(localDate2)<=0){
+            DayOfWeek day = currentDate.getDayOfWeek();
+            if(day.equals(DayOfWeek.SUNDAY) || day.equals(DayOfWeek.SATURDAY))
+                calculated_Rate += weekendDayRate[valueOf.ordinal()];
+            else
+                calculated_Rate += weekdayRate[valueOf.ordinal()];
+            currentDate = currentDate.plusDays(1);
+        }
+        return calculated_Rate;
     }
 }
