@@ -13,8 +13,8 @@ public class HotelReservationSystemTestClass {
         int lakeWoodWeekday = 110;
         int lakeWoodWeekendDay = 90;
 
-        int brideWoodWeekday = 160;
-        int bridWoodWeekendDay = 90;
+        int brideWoodWeekday = 150;
+        int bridWoodWeekendDay = 50;
 
         int ridgeWoodWeekday = 220;
         int ridgeWoodWeekendDay = 150;
@@ -61,5 +61,32 @@ public class HotelReservationSystemTestClass {
                 "Ridgewood Weekday Rate: 220 Weekend Day Rate: 150\n";
         System.out.println(hotelListRates);
         Assert.assertEquals(expected, hotelListRates);
+    }
+
+    @Test
+    public void givenHotelsInTheSystem_ShouldReturnTheCheapestHotelsInTheSystem_WithinGivenRangeOfDate()
+            throws InvalidDateExceptions{
+        String date1 = "11Sep2020";
+        String date2 = "12Sep2020";
+        Map<Hotel, Integer> map = hotelReservationSystem.getCheapestHotels(date1, date2);
+        boolean result1_lakewood = false, result2_bridgewood = false;
+        boolean rates_lakewood = false, rates_bridgewood = false;
+        boolean tot_size = false;
+        int size = 0;
+        for(Map.Entry<Hotel, Integer> entry : map.entrySet()){
+            if(entry.getKey().getName().equals("Lakewood") && entry.getValue().equals(Integer.valueOf(200))){
+                result1_lakewood = true;
+                rates_lakewood = true;
+            }
+            if(entry.getKey().getName().equals("Bridgewood") && entry.getValue().equals(Integer.valueOf(200))){
+                result2_bridgewood = true;
+                rates_bridgewood = true;
+            }
+            System.out.println("Name : " + entry.getKey().getName() + " Rate: " + entry.getValue());
+            size++;
+        }
+        tot_size = (size == 2);
+        Assert.assertTrue(result1_lakewood && rates_lakewood
+                && result2_bridgewood && rates_bridgewood && tot_size);
     }
 }

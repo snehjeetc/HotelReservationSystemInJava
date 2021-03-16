@@ -31,12 +31,13 @@ public class HotelReservationSystem {
         Integer cheapestRate = Integer.MAX_VALUE;
         for(Hotel hotel : hotelList){
             Integer total_period_rate = hotel.calculateRate(d1, d2);
-            if(total_period_rate < cheapestRate){
+            int compare = total_period_rate.compareTo(cheapestRate);
+            if( compare < 0){
                 cheapHotels_andRatesMap.clear();
                 cheapestRate = total_period_rate;
                 cheapHotels_andRatesMap.put(hotel, cheapestRate);
             }
-            else if(total_period_rate == cheapestRate){
+            else if(compare == 0){
                 cheapHotels_andRatesMap.put(hotel, total_period_rate);
             }
         }
