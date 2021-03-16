@@ -42,4 +42,13 @@ public class HotelReservationSystem {
         }
         return cheapHotels_andRatesMap;
     }
+
+    public String printNameRates(){
+        StringBuilder hotelListString = new StringBuilder();
+        for(Hotel hotel : hotelList){
+            hotelListString.append(hotel.getName() + " Weekday Rate: " + hotel.getWeekdayRate()
+                            + " Weekend Day Rate: " + hotel.getWeekendDayRate() + "\n");
+        }
+        return hotelListString.toString();
+    }
 }

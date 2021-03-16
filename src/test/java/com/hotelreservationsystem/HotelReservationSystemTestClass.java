@@ -11,13 +11,19 @@ public class HotelReservationSystemTestClass {
     @Before
     public void init(){
         int lakeWoodWeekday = 110;
+        int lakeWoodWeekendDay = 90;
+
         int brideWoodWeekday = 160;
+        int bridWoodWeekendDay = 90;
+
         int ridgeWoodWeekday = 220;
+        int ridgeWoodWeekendDay = 150;
 
 
-        Hotel lakewood = new Hotel("Lakewood", "Miami", lakeWoodWeekday);
-        Hotel bridewood = new Hotel("Bridgewood", "Miami", brideWoodWeekday);
-        Hotel ridgewood = new Hotel("Ridgewood", "Miami", ridgeWoodWeekday);
+
+        Hotel lakewood = new Hotel("Lakewood", "Miami", lakeWoodWeekday, lakeWoodWeekendDay);
+        Hotel bridewood = new Hotel("Bridgewood", "Miami", brideWoodWeekday, bridWoodWeekendDay);
+        Hotel ridgewood = new Hotel("Ridgewood", "Miami", ridgeWoodWeekday, ridgeWoodWeekendDay);
 
         hotelReservationSystem = new HotelReservationSystem();
         hotelReservationSystem.printWelcomeMessage();
@@ -45,5 +51,15 @@ public class HotelReservationSystemTestClass {
             System.out.println("Hotel: " + entry.getKey().getName() + "Rate: " + entry.getValue());
         }
         Assert.assertTrue(result);
+    }
+
+    @Test
+    public void givenHotelsInTheSystem_ShouldReturnItsWeekDayAndWeekendDayRate(){
+        String hotelListRates = hotelReservationSystem.printNameRates();
+        String expected = "Lakewood Weekday Rate: 110 Weekend Day Rate: 90\n" +
+                "Bridgewood Weekday Rate: 160 Weekend Day Rate: 90\n" +
+                "Ridgewood Weekday Rate: 220 Weekend Day Rate: 150\n";
+        System.out.println(hotelListRates);
+        Assert.assertEquals(expected, hotelListRates);
     }
 }
