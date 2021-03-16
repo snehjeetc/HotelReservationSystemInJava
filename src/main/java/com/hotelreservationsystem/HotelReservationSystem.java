@@ -117,30 +117,22 @@ public class HotelReservationSystem {
         LocalDate localDate1 = LocalDate.of(d1.getYear(), d1.getMonth(), d1.getDay());
         LocalDate localDate2 = LocalDate.of(d2.getYear(), d2.getMonth(), d2.getDay());
         Hotel min = hotelList.stream()
-                            .min((a, b) ->{
-                                int a_val = 0;
-                                int b_val = 0;
-                                a_val = a.calculateRate_LocalDates(valueOf, localDate1, localDate2);
-                                b_val = b.calculateRate_LocalDates(valueOf, localDate1, localDate2);
-                                if(a_val - b_val == 0)
-                                    return a.rating() - b.rating();
-                                else if(a_val - b_val > 0)
-                                    return a_val;
-                                else
-                                    return b_val;
-                            })
+                            .min((a, b) -> {
+                                int a_val = a.calculateRate_LocalDates(valueOf, localDate1, localDate2)
+                                        - b.calculateRate_LocalDates(valueOf, localDate1, localDate2);
+                                if(a_val == 0)
+                                    return b.rating() - a.rating();
+                                return a_val;
+                            }
+                            )
                            .get();
         if(min == null)
             throw new HotelException("Invalid customer type");
+        System.out.println(min);
         int minimum = min.calculateRate_LocalDates(valueOf, localDate1, localDate2);
         return  hotelList.stream()
-                .filter(e -> {
-                    boolean result = false;
-                    result =  e.calculateRate_LocalDates(valueOf, localDate1, localDate2) == minimum;
-                    if(result == true)
-                        return true;
-                    else
-                        return false;
-                }).collect(Collectors.toList());
+                .filter(e -> e.calculateRate_LocalDates(valueOf, localDate1, localDate2) == minimum &&
+                        e.rating() == min.rating()
+                ).collect(Collectors.toList());
     }
 }

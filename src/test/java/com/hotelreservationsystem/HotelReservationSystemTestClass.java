@@ -179,4 +179,22 @@ public class HotelReservationSystemTestClass {
         String expected = "Ridgewood: Rating: 5 || ";
         Assert.assertEquals(expected, result);
     }
+
+    @Test
+    public void givenHotelsInTheSystem_shouldReturn_cheap_best_rated_Hotels_for_RegularCustomers_TestCase_12()
+            throws InvalidDateExceptions, HotelException{
+        String date1 = "11Sep2020";
+        String date2 = "12Sep2020";
+        String customer_type = "regular";
+        System.out.println(Hotel.Customer_Type.valueOf((customer_type+"_type").toUpperCase()));
+        List<Hotel> list = hotelReservationSystem.getCheapAndBestRatedHotelList(Hotel.Customer_Type
+                        .valueOf((customer_type+"_type").toUpperCase()),
+                date1, date2);
+        String result = "";
+        for(Hotel h : list){
+            result += h.getName() + ": " + "Rating: " + h.rating() + " || ";
+        }
+        String expected = "Bridgewood: Rating: 4 || ";
+        Assert.assertEquals(expected, result);
+    }
 }
