@@ -88,4 +88,23 @@ public class HotelReservationSystem {
         }
         return cheapHotels_andRatesMap;
     }
+
+    public Map<Hotel, Integer> getBestRatedHotels(String from_date, String to_date)
+            throws InvalidDateExceptions{
+        Date d1 = Date.extractDate(from_date);
+        Date d2 = Date.extractDate(to_date);
+        Map<Hotel, Integer> bestRatedHotels_AndTheirRates = new HashMap<>();
+        int rating = -1;
+        for(Hotel hotel : hotelList){
+            if(hotel.rating() > rating){
+                bestRatedHotels_AndTheirRates.clear();
+                rating = hotel.rating();
+                bestRatedHotels_AndTheirRates.put(hotel, hotel.calculateRate(d1, d2));
+            }
+            else if(hotel.rating() == rating){
+                bestRatedHotels_AndTheirRates.put(hotel, hotel.calculateRate(d1, d2));
+            }
+        }
+        return bestRatedHotels_AndTheirRates;
+    }
 }

@@ -114,4 +114,19 @@ public class HotelReservationSystemTestClass {
         }
         Assert.assertEquals(expected, result);
     }
+
+    @Test
+    public void givenHotelsInTheSystem_ShouldReturnTheBestRatedHotelsInTheSystem_WithinGivenRangeOfDate_TestCase7()
+            throws InvalidDateExceptions{
+        String date1 = "11Sep2020";
+        String date2 = "12Sep2020";
+        Map<Hotel, Integer> map = hotelReservationSystem.getBestRatedHotels(date1, date2);
+        String expected = "Ridgewood, Rating: 5 and Total Rates: 370";
+        String result="";
+        for( Map.Entry<Hotel, Integer> entry : map.entrySet()){
+            result = entry.getKey().getName() + ", Rating: " + entry.getKey().rating()
+                    + " and Total Rates: " + entry.getValue();
+        }
+        Assert.assertEquals(expected, result);
+    }
 }
