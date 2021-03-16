@@ -10,19 +10,33 @@ public class HotelReservationSystemTestClass {
     private HotelReservationSystem hotelReservationSystem;
     @Before
     public void init(){
-        int lakeWoodWeekday = 110;
-        int lakeWoodWeekendDay = 90;
+        int lakeWoodWeekday[] = new int[2];
+        lakeWoodWeekday[Hotel.Customer_Type.REGULAR_TYPE.ordinal()] = 110;
+        lakeWoodWeekday[Hotel.Customer_Type.REWARD_TYPE.ordinal()] = 80;
+        int lakeWoodWeekendDay[] = new int[2];
+        lakeWoodWeekendDay[Hotel.Customer_Type.REGULAR_TYPE.ordinal()] = 90;
+        lakeWoodWeekendDay[Hotel.Customer_Type.REWARD_TYPE.ordinal()] = 80;
 
-        int brideWoodWeekday = 150;
-        int bridWoodWeekendDay = 50;
+        int bridgeWoodWeekday[] = new int[2];
+        bridgeWoodWeekday[Hotel.Customer_Type.REGULAR_TYPE.ordinal()] = 150;
+        bridgeWoodWeekday[Hotel.Customer_Type.REWARD_TYPE.ordinal()] = 110;
+        int bridgeWoodWeekendDay[] = new int[2];
+        bridgeWoodWeekendDay[Hotel.Customer_Type.REGULAR_TYPE.ordinal()] = 50;
+        bridgeWoodWeekendDay[Hotel.Customer_Type.REWARD_TYPE.ordinal()] = 50;
 
-        int ridgeWoodWeekday = 220;
-        int ridgeWoodWeekendDay = 150;
+        int ridgeWoodWeekday[] = new int[2];
+        ridgeWoodWeekday[Hotel.Customer_Type.REGULAR_TYPE.ordinal()] = 220;
+        ridgeWoodWeekday[Hotel.Customer_Type.REWARD_TYPE.ordinal()] = 100;
+        int ridgeWoodWeekendDay[] = new int[2];
+        ridgeWoodWeekendDay[Hotel.Customer_Type.REGULAR_TYPE.ordinal()] = 150;
+        ridgeWoodWeekendDay[Hotel.Customer_Type.REWARD_TYPE.ordinal()] = 40;
+
+
 
 
 
         Hotel lakewood = new Hotel("Lakewood", "Miami", lakeWoodWeekday, lakeWoodWeekendDay, 3);
-        Hotel bridewood = new Hotel("Bridgewood", "Miami", brideWoodWeekday, bridWoodWeekendDay, 4);
+        Hotel bridewood = new Hotel("Bridgewood", "Miami", bridgeWoodWeekday, bridgeWoodWeekendDay, 4);
         Hotel ridgewood = new Hotel("Ridgewood", "Miami", ridgeWoodWeekday, ridgeWoodWeekendDay, 5);
 
         hotelReservationSystem = new HotelReservationSystem();
@@ -40,10 +54,11 @@ public class HotelReservationSystemTestClass {
     }
 
     @Test
-    public void givenHotelsInTheSystem_ShouldReturnTheCheapestHotelList_WithinGivenDates() throws InvalidDateExceptions{
+    public void givenHotelsInTheSystem_ShouldReturnTheCheapestHotelList_WithinGivenDates()
+            throws InvalidDateExceptions, HotelException{
         String date1 = "10Sep2020";
         String date2 = "11Sep2020";
-        Map<Hotel, Integer> map = hotelReservationSystem.getCheapestHotels(date1, date2);
+        Map<Hotel, Integer> map = hotelReservationSystem.getCheapestHotels(Hotel.Customer_Type.REGULAR_TYPE, date1, date2);
         boolean result = false;
         for( Map.Entry<Hotel, Integer> entry : map.entrySet()){
             if(entry.getKey().getName().equals("Lakewood") && entry.getValue().equals(Integer.valueOf(220)))
@@ -55,20 +70,20 @@ public class HotelReservationSystemTestClass {
 
     @Test
     public void givenHotelsInTheSystem_ShouldReturnItsWeekDayAndWeekendDayRate(){
-        String hotelListRates = hotelReservationSystem.printNameWeekDayAndWeekendRates();
-        String expected = "Lakewood Weekday Rate: 110 Weekend Day Rate: 90\n" +
-                "Bridgewood Weekday Rate: 160 Weekend Day Rate: 90\n" +
-                "Ridgewood Weekday Rate: 220 Weekend Day Rate: 150\n";
+        String hotelListRates = hotelReservationSystem.printHotelsDetails();
+        String expected = "Lakewood, Miami: Weekday and Weekend regular rate: 110, 90 Weekday and Weekend reward rates: 80, 80 Rating : 3\n" +
+                "Bridgewood, Miami: Weekday and Weekend regular rate: 150, 50 Weekday and Weekend reward rates: 110, 50 Rating : 4\n" +
+                "Ridgewood, Miami: Weekday and Weekend regular rate: 220, 150 Weekday and Weekend reward rates: 40, 0 Rating : 5\n";
         System.out.println(hotelListRates);
         Assert.assertEquals(expected, hotelListRates);
     }
 
     @Test
     public void givenHotelsInTheSystem_ShouldReturnTheCheapestHotelsInTheSystem_WithinGivenRangeOfDate()
-            throws InvalidDateExceptions{
+            throws InvalidDateExceptions, HotelException{
         String date1 = "11Sep2020";
         String date2 = "12Sep2020";
-        Map<Hotel, Integer> map = hotelReservationSystem.getCheapestHotels(date1, date2);
+        Map<Hotel, Integer> map = hotelReservationSystem.getCheapestHotels(Hotel.Customer_Type.REGULAR_TYPE, date1, date2);
         boolean result1_lakewood = false, result2_bridgewood = false;
         boolean rates_lakewood = false, rates_bridgewood = false;
         boolean tot_size = false;
@@ -102,10 +117,10 @@ public class HotelReservationSystemTestClass {
 
     @Test
     public void givenHotelsInTheSystem_ShouldReturnTheBestCheapestHotelsInTheSystem_WithinGivenRangeOfDate()
-            throws InvalidDateExceptions{
+            throws InvalidDateExceptions, HotelException{
         String date1 = "11Sep2020";
         String date2 = "12Sep2020";
-        Map<Hotel, Integer> map = hotelReservationSystem.getBestRatedCheapestHotels(date1, date2);
+        Map<Hotel, Integer> map = hotelReservationSystem.getBestRatedCheapestHotels(Hotel.Customer_Type.REGULAR_TYPE, date1, date2);
         String expected = "Bridgewood, Rating: 4 and Total Rates: 200";
         String result="";
         for( Map.Entry<Hotel, Integer> entry : map.entrySet()){
@@ -117,11 +132,28 @@ public class HotelReservationSystemTestClass {
 
     @Test
     public void givenHotelsInTheSystem_ShouldReturnTheBestRatedHotelsInTheSystem_WithinGivenRangeOfDate_TestCase7()
-            throws InvalidDateExceptions{
+            throws InvalidDateExceptions, HotelException{
         String date1 = "11Sep2020";
         String date2 = "12Sep2020";
-        Map<Hotel, Integer> map = hotelReservationSystem.getBestRatedHotels(date1, date2);
+        Map<Hotel, Integer> map = hotelReservationSystem.getBestRatedHotels(Hotel.Customer_Type.REGULAR_TYPE, date1, date2);
         String expected = "Ridgewood, Rating: 5 and Total Rates: 370";
+        String result="";
+        for( Map.Entry<Hotel, Integer> entry : map.entrySet()){
+            result = entry.getKey().getName() + ", Rating: " + entry.getKey().rating()
+                    + " and Total Rates: " + entry.getValue();
+        }
+        Assert.assertEquals(expected, result);
+    }
+
+    @Test
+    public void givenHotelsInTheSystem_ShouldReturnTheBestCheapRatedHotels_ForRewardCustomerType_WithinGivenRangeOfDate_TestCase8()
+    throws InvalidDateExceptions, HotelException{
+        String date1 = "11Sep2020";
+        String date2 = "12Sep2020";
+        String cutomer_type = "Reward_type";
+        Map<Hotel, Integer> map = hotelReservationSystem.getBestRatedCheapestHotels(Hotel.Customer_Type.valueOf(cutomer_type.toUpperCase()),
+                date1, date2);
+        String expected = "Ridgewood, Rating: 5 and Total Rates: 140";
         String result="";
         for( Map.Entry<Hotel, Integer> entry : map.entrySet()){
             result = entry.getKey().getName() + ", Rating: " + entry.getKey().rating()

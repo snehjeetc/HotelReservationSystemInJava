@@ -24,13 +24,14 @@ public class HotelReservationSystem {
         return names.toString();
     }
 
-    public Map<Hotel, Integer> getCheapestHotels (String from_date, String to_date) throws InvalidDateExceptions{
+    public Map<Hotel, Integer> getCheapestHotels (Hotel.Customer_Type type, String from_date, String to_date)
+            throws InvalidDateExceptions, HotelException{
         Date d1 = Date.extractDate(from_date);
         Date d2 = Date.extractDate(to_date);
         Map<Hotel, Integer> cheapHotels_andRatesMap = new HashMap<>();
         Integer cheapestRate = Integer.MAX_VALUE;
         for(Hotel hotel : hotelList){
-            Integer total_period_rate = hotel.calculateRate(d1, d2);
+            Integer total_period_rate = hotel.calculateRate(type, d1, d2);
             int compare = total_period_rate.compareTo(cheapestRate);
             if( compare < 0){
                 cheapHotels_andRatesMap.clear();
@@ -44,11 +45,10 @@ public class HotelReservationSystem {
         return cheapHotels_andRatesMap;
     }
 
-    public String printNameWeekDayAndWeekendRates(){
+    public String printHotelsDetails(){
         StringBuilder hotelListString = new StringBuilder();
         for(Hotel hotel : hotelList){
-            hotelListString.append(hotel.getName() + " Weekday Rate: " + hotel.getWeekdayRate()
-                            + " Weekend Day Rate: " + hotel.getWeekendDayRate() + "\n");
+            hotelListString.append(hotel + "\n");
         }
         return hotelListString.toString();
     }
@@ -60,15 +60,15 @@ public class HotelReservationSystem {
         return hotelListString.toString();
     }
 
-    public Map<Hotel, Integer> getBestRatedCheapestHotels(String from_date, String to_date)
-            throws InvalidDateExceptions {
+    public Map<Hotel, Integer> getBestRatedCheapestHotels(Hotel.Customer_Type type, String from_date, String to_date)
+            throws InvalidDateExceptions, HotelException {
         Date d1 = Date.extractDate(from_date);
         Date d2 = Date.extractDate(to_date);
         Map<Hotel, Integer> cheapHotels_andRatesMap = new HashMap<>();
         Integer cheapestRate = Integer.MAX_VALUE;
         Hotel ref_cheapestHotel = null;
         for(Hotel hotel : hotelList){
-            Integer total_period_rate = hotel.calculateRate(d1, d2);
+            Integer total_period_rate = hotel.calculateRate(type, d1, d2);
             int compare = total_period_rate.compareTo(cheapestRate);
             if( compare < 0){
                 cheapHotels_andRatesMap.clear();
@@ -89,8 +89,8 @@ public class HotelReservationSystem {
         return cheapHotels_andRatesMap;
     }
 
-    public Map<Hotel, Integer> getBestRatedHotels(String from_date, String to_date)
-            throws InvalidDateExceptions{
+    public Map<Hotel, Integer> getBestRatedHotels(Hotel.Customer_Type type, String from_date, String to_date)
+            throws InvalidDateExceptions, HotelException{
         Date d1 = Date.extractDate(from_date);
         Date d2 = Date.extractDate(to_date);
         Map<Hotel, Integer> bestRatedHotels_AndTheirRates = new HashMap<>();
@@ -99,10 +99,10 @@ public class HotelReservationSystem {
             if(hotel.rating() > rating){
                 bestRatedHotels_AndTheirRates.clear();
                 rating = hotel.rating();
-                bestRatedHotels_AndTheirRates.put(hotel, hotel.calculateRate(d1, d2));
+                bestRatedHotels_AndTheirRates.put(hotel, hotel.calculateRate(type, d1, d2));
             }
             else if(hotel.rating() == rating){
-                bestRatedHotels_AndTheirRates.put(hotel, hotel.calculateRate(d1, d2));
+                bestRatedHotels_AndTheirRates.put(hotel, hotel.calculateRate(type, d1, d2));
             }
         }
         return bestRatedHotels_AndTheirRates;
