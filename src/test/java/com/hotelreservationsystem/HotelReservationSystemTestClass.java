@@ -21,9 +21,9 @@ public class HotelReservationSystemTestClass {
 
 
 
-        Hotel lakewood = new Hotel("Lakewood", "Miami", lakeWoodWeekday, lakeWoodWeekendDay);
-        Hotel bridewood = new Hotel("Bridgewood", "Miami", brideWoodWeekday, bridWoodWeekendDay);
-        Hotel ridgewood = new Hotel("Ridgewood", "Miami", ridgeWoodWeekday, ridgeWoodWeekendDay);
+        Hotel lakewood = new Hotel("Lakewood", "Miami", lakeWoodWeekday, lakeWoodWeekendDay, 3);
+        Hotel bridewood = new Hotel("Bridgewood", "Miami", brideWoodWeekday, bridWoodWeekendDay, 4);
+        Hotel ridgewood = new Hotel("Ridgewood", "Miami", ridgeWoodWeekday, ridgeWoodWeekendDay, 5);
 
         hotelReservationSystem = new HotelReservationSystem();
         hotelReservationSystem.printWelcomeMessage();
@@ -55,7 +55,7 @@ public class HotelReservationSystemTestClass {
 
     @Test
     public void givenHotelsInTheSystem_ShouldReturnItsWeekDayAndWeekendDayRate(){
-        String hotelListRates = hotelReservationSystem.printNameRates();
+        String hotelListRates = hotelReservationSystem.printNameWeekDayAndWeekendRates();
         String expected = "Lakewood Weekday Rate: 110 Weekend Day Rate: 90\n" +
                 "Bridgewood Weekday Rate: 160 Weekend Day Rate: 90\n" +
                 "Ridgewood Weekday Rate: 220 Weekend Day Rate: 150\n";
@@ -88,5 +88,15 @@ public class HotelReservationSystemTestClass {
         tot_size = (size == 2);
         Assert.assertTrue(result1_lakewood && rates_lakewood
                 && result2_bridgewood && rates_bridgewood && tot_size);
+    }
+
+    @Test
+    public void givenHotelsInTheSystem_ShouldReturnProperRatingsAsAssigned(){
+        String result = hotelReservationSystem.printNamesAndRating();
+        String expectedResult = "Lakewood Rating: 3\n" +
+                "Bridgewood Rating: 4\n" +
+                "Ridgewood Rating: 5\n";
+        System.out.println(result);
+        Assert.assertEquals(expectedResult, result);
     }
 }

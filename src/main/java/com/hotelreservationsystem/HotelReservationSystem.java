@@ -44,12 +44,19 @@ public class HotelReservationSystem {
         return cheapHotels_andRatesMap;
     }
 
-    public String printNameRates(){
+    public String printNameWeekDayAndWeekendRates(){
         StringBuilder hotelListString = new StringBuilder();
         for(Hotel hotel : hotelList){
             hotelListString.append(hotel.getName() + " Weekday Rate: " + hotel.getWeekdayRate()
                             + " Weekend Day Rate: " + hotel.getWeekendDayRate() + "\n");
         }
+        return hotelListString.toString();
+    }
+
+    public String printNamesAndRating(){
+        StringBuilder hotelListString = new StringBuilder();
+        for(Hotel hotel : hotelList)
+            hotelListString.append(hotel.getName() + " Rating: " + hotel.rating() + "\n");
         return hotelListString.toString();
     }
 }
