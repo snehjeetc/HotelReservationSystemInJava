@@ -99,4 +99,19 @@ public class HotelReservationSystemTestClass {
         System.out.println(result);
         Assert.assertEquals(expectedResult, result);
     }
+
+    @Test
+    public void givenHotelsInTheSystem_ShouldReturnTheBestCheapestHotelsInTheSystem_WithinGivenRangeOfDate()
+            throws InvalidDateExceptions{
+        String date1 = "11Sep2020";
+        String date2 = "12Sep2020";
+        Map<Hotel, Integer> map = hotelReservationSystem.getBestRatedCheapestHotels(date1, date2);
+        String expected = "Bridgewood, Rating: 4 and Total Rates: 200";
+        String result="";
+        for( Map.Entry<Hotel, Integer> entry : map.entrySet()){
+            result = entry.getKey().getName() + ", Rating: " + entry.getKey().rating()
+                    + " and Total Rates: " + entry.getValue();
+        }
+        Assert.assertEquals(expected, result);
+    }
 }

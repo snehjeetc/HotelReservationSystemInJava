@@ -59,4 +59,33 @@ public class HotelReservationSystem {
             hotelListString.append(hotel.getName() + " Rating: " + hotel.rating() + "\n");
         return hotelListString.toString();
     }
+
+    public Map<Hotel, Integer> getBestRatedCheapestHotels(String from_date, String to_date)
+            throws InvalidDateExceptions {
+        Date d1 = Date.extractDate(from_date);
+        Date d2 = Date.extractDate(to_date);
+        Map<Hotel, Integer> cheapHotels_andRatesMap = new HashMap<>();
+        Integer cheapestRate = Integer.MAX_VALUE;
+        Hotel ref_cheapestHotel = null;
+        for(Hotel hotel : hotelList){
+            Integer total_period_rate = hotel.calculateRate(d1, d2);
+            int compare = total_period_rate.compareTo(cheapestRate);
+            if( compare < 0){
+                cheapHotels_andRatesMap.clear();
+                cheapestRate = total_period_rate;
+                ref_cheapestHotel = hotel;
+                cheapHotels_andRatesMap.put(hotel, cheapestRate);
+            }
+            else if(compare == 0){
+                if(hotel.rating() > ref_cheapestHotel.rating()) {
+                    cheapHotels_andRatesMap.clear();
+                    cheapHotels_andRatesMap.put(hotel, total_period_rate);
+                }
+                else if(hotel.rating() == ref_cheapestHotel.rating()){
+                    cheapHotels_andRatesMap.put(hotel, total_period_rate);
+                }
+            }
+        }
+        return cheapHotels_andRatesMap;
+    }
 }
