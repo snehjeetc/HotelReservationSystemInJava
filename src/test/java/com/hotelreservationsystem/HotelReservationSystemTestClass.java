@@ -73,7 +73,7 @@ public class HotelReservationSystemTestClass {
         String hotelListRates = hotelReservationSystem.printHotelsDetails();
         String expected = "Lakewood, Miami: Weekday and Weekend regular rate: 110, 90 Weekday and Weekend reward rates: 80, 80 Rating : 3\n" +
                 "Bridgewood, Miami: Weekday and Weekend regular rate: 150, 50 Weekday and Weekend reward rates: 110, 50 Rating : 4\n" +
-                "Ridgewood, Miami: Weekday and Weekend regular rate: 220, 150 Weekday and Weekend reward rates: 40, 0 Rating : 5\n";
+                "Ridgewood, Miami: Weekday and Weekend regular rate: 220, 150 Weekday and Weekend reward rates: 100, 40 Rating : 5\n";
         System.out.println(hotelListRates);
         Assert.assertEquals(expected, hotelListRates);
     }
