@@ -116,7 +116,7 @@ public class HotelReservationSystem {
         Date d2 = Date.extractDate(date2);
         LocalDate localDate1 = LocalDate.of(d1.getYear(), d1.getMonth(), d1.getDay());
         LocalDate localDate2 = LocalDate.of(d2.getYear(), d2.getMonth(), d2.getDay());
-        Hotel min = hotelList.stream()
+        Hotel hotelMin = hotelList.stream()
                             .min((a, b) -> {
                                 int a_val = a.calculateRate_LocalDates(valueOf, localDate1, localDate2)
                                         - b.calculateRate_LocalDates(valueOf, localDate1, localDate2);
@@ -126,13 +126,13 @@ public class HotelReservationSystem {
                             }
                             )
                            .get();
-        if(min == null)
-            throw new HotelException("Invalid customer type");
-        System.out.println(min);
-        int minimum = min.calculateRate_LocalDates(valueOf, localDate1, localDate2);
+        if(hotelMin == null)
+            throw new HotelException("Something Went Wrong");
+        System.out.println(hotelMin);
+        int minimum = hotelMin.calculateRate_LocalDates(valueOf, localDate1, localDate2);
         return  hotelList.stream()
                 .filter(e -> e.calculateRate_LocalDates(valueOf, localDate1, localDate2) == minimum &&
-                        e.rating() == min.rating()
+                        e.rating() == hotelMin.rating()
                 ).collect(Collectors.toList());
     }
 }
